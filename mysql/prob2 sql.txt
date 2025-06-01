@@ -1,0 +1,87 @@
+CREATE DATABASE netflix_db;
+
+
+CREATE TABLE SUBSCRIPTION (
+    sub_id INT PRIMARY KEY,
+    plan_name VARCHAR(50) NOT NULL,
+    feature TEXT,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+
+CREATE TABLE USER (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    country VARCHAR(50),
+    current_sub_id INT,
+    FOREIGN KEY (current_sub_id) REFERENCES SUBSCRIPTION(sub_id)
+);
+
+
+CREATE TABLE SUBSCRIPTION_HISTORY (
+    purchess_id INT PRIMARY KEY,
+    user_id INT,
+    sub_id INT,
+    start_day DATE NOT NULL,
+    end_day DATE,
+    FOREIGN KEY (user_id) REFERENCES USER(user_id),
+    FOREIGN KEY (sub_id) REFERENCES SUBSCRIPTION(sub_id)
+);
+
+
+CREATE TABLE PROFILE (
+    prof_id INT PRIMARY KEY,
+    user_id INT,
+    profile_name VARCHAR(100),
+    maturity_level VARCHAR(20),
+    FOREIGN KEY (user_id) REFERENCES USER(user_id)
+);
+
+
+CREATE TABLE MEDIA_CONTENT (
+    content_id INT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    genre VARCHAR(50),
+    language VARCHAR(50),
+    release_year INT,
+    maturity_rating VARCHAR(20)
+);
+
+
+CREATE TABLE MOVIE (
+    content_id INT PRIMARY KEY,
+    duration INT,
+    FOREIGN KEY (content_id) REFERENCES MEDIA_CONTENT(content_id)
+);
+
+
+CREATE TABLE SERIES (
+    content_id INT PRIMARY KEY,
+    FOREIGN KEY (content_id) REFERENCES MEDIA_CONTENT(content_id)
+);
+
+
+CREATE TABLE EPISODE (
+    episode_id INT PRIMARY KEY,
+    content_id INT,
+    title VARCHAR(255),
+    season_number INT,
+    episode_number INT,
+    duration INT,
+    FOREIGN KEY (content_id) REFERENCES SERIES(content_id)
+);
+
+
+CREATE TABLE WATCH_HISTORY (
+    watch_id INT PRIMARY KEY,
+    prof_id INT,
+    content_id INT,
+    watch_date DATE,
+    watch_duration INT,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    FOREIGN KEY (prof_id) REFERENCES PROFILE(prof_id),
+    FOREIGN KEY (content_id) REFERENCES MEDIA_CONTENT(content_id),
+    CONSTRAINT unique_profile_rating UNIQUE (prof_id, content_id)
+);
+
