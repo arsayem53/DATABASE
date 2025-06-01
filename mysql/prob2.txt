@@ -1,1 +1,21 @@
+A video streaming platform allows users to subscribe to different plans and watch various types of content, such as movies and series. Each user registers with their basic details and subscribes to a plan. A user may change their subscription over time, but only one plan remains active at any given moment. These changes are recorded in the subscription history.
+
+Each user can create multiple profiles (e.g., for different family members), and each profile maintains its own watch history, including information about which content was watched, how much progress was made, and optionally a user rating.
+
+The platform offers a wide variety of media content, which can be either movies or series. This distinction is modeled using an ISA (inheritance) relationship. Every movie or series shares common attributes like title, language, genre, release year, and duration. For series, additional information such as the total number of seasons is stored, and each series contains multiple episodes, each with its own title, season number, episode number, and duration.
+
+Subscription plans define pricing tiers and limitations, including resolution and the number of devices supported. All plan details are maintained in a dedicated subscription plan table.
+
+The database keeps track of:
+
+Which plan a user is subscribed to (via subscription history)
+
+Which content was watched by each profile (via watch history)
+
+The structure of media (with episodes belonging to series)
+
+Differentiation between movies and series (via ISA from MEDIA_CONTENT)
+
+This design enables personalized viewing, subscription tracking, and rich content management, while maintaining data normalization and support for future scalability.
+
 
